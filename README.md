@@ -27,7 +27,7 @@ $ yarn global add file:$PWD
 ### Setup output directory
 By default, the markdown files will be put inside your `$HOME` directory. If you want to modify it, just set the following environment variable in your terminal's profile:
 ```
-$ export MARKDOWNIFY_DIR='<preferred directory'
+$ export MARKDOWNIFY_DIR='<preferred directory>'
 ```
 ## Description
 ```
