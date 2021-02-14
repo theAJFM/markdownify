@@ -7,6 +7,7 @@ const JSDOM = require('jsdom').JSDOM
 const turndown = require('turndown')
 const turndownService = new turndown()
 const fs = require('fs')
+const path = require('path')
 const defaultDirectory = process.env.MARKDOWNIFY_DIR || process.env.HOME
 
 yargs
@@ -29,9 +30,15 @@ yargs
                 try {
                     const data = await page.evaluate(() => document.querySelector('*').outerHTML);
                     const doc = new JSDOM(data, {url: url})
-                    let reader = new Readability(doc.window.document)
-                    let readerDoc = reader.parse()
-                    fs.writeFileSync(`${defaultDirectory}/${readerDoc.title}.md`, turndownService.turndown(readerDoc.content))
+                    const reader = new Readability(doc.window.document)
+                    const readerDoc = reader.parse()
+                    const markdownData = turndownService.turndown(readerDoc.content)
+                    try {
+                        writeMarkdown(`${defaultDirectory}/${readerDoc.title}.md`, markdownData, url)
+                    } catch(fe) {
+                        console.warn("Filename is invalid, using timestamp as a fallback filename.")
+                        writeMarkdown(`${defaultDirectory}/${Date.now()}.md`, markdownData, url)
+                    }
                 } catch(e) {
                     console.error(`Error extracting markdown from ${url}`, e)
                 }
@@ -43,3 +50,8 @@ yargs
     .alias('help', 'h')
     .demandCommand()
     .argv
+
+function writeMarkdown(dir, data, url) {
+    fs.writeFileSync(dir, data)
+    console.log(`${dir} has been created for the url: ${url}.`)
+}
