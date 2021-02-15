@@ -33,8 +33,9 @@ yargs
                     const reader = new Readability(doc.window.document)
                     const readerDoc = reader.parse()
                     const markdownData = turndownService.turndown(readerDoc.content)
+                    const filename = readerDoc.title != '' && readerDoc.title != null ? readerDoc.title : Date.now()
                     try {
-                        writeMarkdown(`${defaultDirectory}/${readerDoc.title}.md`, markdownData, url)
+                        writeMarkdown(`${defaultDirectory}/${filename}.md`, markdownData, url)
                     } catch(fe) {
                         console.warn("Filename is invalid, using timestamp as a fallback filename.")
                         writeMarkdown(`${defaultDirectory}/${Date.now()}.md`, markdownData, url)
