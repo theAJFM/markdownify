@@ -7,7 +7,6 @@ const JSDOM = require('jsdom').JSDOM
 const turndown = require('turndown')
 const turndownService = new turndown()
 const fs = require('fs')
-const path = require('path')
 const defaultDirectory = process.env.MARKDOWNIFY_DIR || process.env.HOME
 
 yargs
