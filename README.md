@@ -1,10 +1,11 @@
 <div align="center">
 
-<img src="./logo.png" alt="markdownify" width="128"/>
-## Markdownify
-Simple app to extract markdown files out of web pages, given a list of urls.
-</div>
+![markdownify](logo.png)
 
+Simple app to extract markdown files out of web pages, given a list of urls.
+</div> 
+
+---
 ## Getting Started
 ### Installing Dependencies
 To use the application, install the dependencies first via your preferred package manager.
