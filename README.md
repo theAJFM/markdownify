@@ -43,5 +43,6 @@ markdownify convert http://example.com/
 ```
 Options:
       --version  Show version number                                   [boolean]
+  -t, --tags     Add tags to markdown                                   [string]
   -h, --help     Show help                                             [boolean]
 ```
