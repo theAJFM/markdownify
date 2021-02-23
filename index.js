@@ -28,6 +28,9 @@ yargs
         } else {
             const browser = await puppeteer.launch()
             const page = await browser.newPage()
+            if (argv['js-disabled']) {
+                await page.setJavaScriptEnabled(false)
+            }
             for (const url of argv.urls) {
                 spinner.start(`Generating markdown from ${url}`);
                 await page.goto(url, { waitUntil: 'networkidle0' })
@@ -58,10 +61,17 @@ yargs
             await browser.close()
         }
     })
-    .option('tags', {
-        alias: 't',
-        type: 'string',
-        description: 'Add tags to markdown'
+    .options({
+        'tags' : {
+            alias: 't',
+            type: 'string',
+            description: 'Add tags to markdown',
+        },
+        'js-disabled': {
+            alias: 'j',
+            type: 'boolean',
+            description: 'Disable javascript on page',
+        }
     })
     .help()
     .alias('help', 'h')
