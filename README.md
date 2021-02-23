@@ -1,6 +1,6 @@
 <div align="center">
 
-![markdownify](./logo.png)
+<img src="./logo.png" alt="markdownify" width="128"/>
 ## Markdownify
 Simple app to extract markdown files out of web pages, given a list of urls.
 </div>
