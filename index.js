@@ -23,15 +23,20 @@ yargs
             yargs.showHelp()
         } else {
             const browser = await puppeteer.launch()
-            const page = await browser.newPage();
+            const page = await browser.newPage()
             for (const url of argv.urls) {
                 await page.goto(url, { waitUntil: 'networkidle0' })
                 try {
-                    const data = await page.evaluate(() => document.querySelector('*').outerHTML);
+                    const data = await page.evaluate(() => document.querySelector('*').outerHTML)
                     const doc = new JSDOM(data, {url: url})
                     const reader = new Readability(doc.window.document)
                     const readerDoc = reader.parse()
-                    const markdownData = turndownService.turndown(readerDoc.content)
+                    let markdownData = turndownService.turndown(readerDoc.content)
+                    if (argv.tags) {
+                        const tagsList = argv.tags.split(',')
+                        const hashtags = tagsList.map((a) => `#${a}`)
+                        markdownData = hashtags.join(' ') + '\n\n' + markdownData
+                    }
                     const filename = readerDoc.title != '' && readerDoc.title != null ? readerDoc.title : Date.now()
                     try {
                         writeMarkdown(`${defaultDirectory}/${filename}.md`, markdownData, url)
@@ -45,6 +50,11 @@ yargs
             }
             await browser.close()
         }
+    })
+    .option('tags', {
+        alias: 't',
+        type: 'string',
+        description: 'Add tags to markdown'
     })
     .help()
     .alias('help', 'h')
