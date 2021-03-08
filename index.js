@@ -39,7 +39,7 @@ yargs
                     const doc = new JSDOM(data, { url: url })
                     const reader = new Readability(doc.window.document)
                     const readerDoc = reader.parse()
-                    let markdownData = turndownService.turndown(readerDoc.content)
+                    let markdownData = `*[View Original](${url})*\n\n` + turndownService.turndown(readerDoc.content)
                     if (argv.tags) {
                         const tagsList = argv.tags.split(',')
                         const hashtags = tagsList.map((a) => `#${a}`)
