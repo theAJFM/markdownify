@@ -6,6 +6,7 @@ const { Readability } = require('@mozilla/readability')
 const JSDOM = require('jsdom').JSDOM
 const turndown = require('turndown')
 const turndownService = new turndown({ emDelimiter: '*' })
+const gfmPlugin = require('turndown-plugin-gfm').gfm
 const fs = require('fs')
 const ora = require('ora')
 const chalk = require('chalk');
@@ -39,6 +40,9 @@ yargs
                     const doc = new JSDOM(data, { url: url })
                     const reader = new Readability(doc.window.document)
                     const readerDoc = reader.parse()
+                    if (argv.gfm) {
+                        turndownService.use(gfmPlugin)
+                    }
                     let markdownData = `*[View Original](${url})*\n\n` + turndownService.turndown(readerDoc.content)
                     if (argv.tags) {
                         const tagsList = argv.tags.split(',')
@@ -76,6 +80,11 @@ yargs
             alias: 'T',
             type: 'number',
             description: 'Timeout for loading the page in milliseconds'
+        },
+        'gfm': {
+            alias: 'g',
+            type: 'boolean',
+            description: 'Enable gfm element parsing (e.g. task list, strikethrough, tables)'
         },
     })
     .help()
