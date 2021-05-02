@@ -33,7 +33,7 @@ yargs
             }
             for (const url of argv.urls) {
                 spinner.start(`Generating markdown from ${url}`);
-                await page.goto(url, { waitUntil: 'networkidle0' })
+                await page.goto(url, { waitUntil: 'networkidle0', timeout: 0 || argv.timeout })
                 try {
                     const data = await page.evaluate(() => document.querySelector('*').outerHTML)
                     const doc = new JSDOM(data, { url: url })
@@ -71,7 +71,12 @@ yargs
             alias: 'j',
             type: 'boolean',
             description: 'Disable javascript on page',
-        }
+        },
+        'timeout': {
+            alias: 'T',
+            type: 'number',
+            description: 'Timeout for loading the page in milliseconds'
+        },
     })
     .help()
     .alias('help', 'h')
