@@ -8,6 +8,7 @@
   "dependencies": {
     "@mozilla/readability": "^0.4.1",
     "jsdom": "^16.4.0",
+    "nanocolors": "^0.2.12",
     "puppeteer": "^7.1.0",
     "turndown": "^7.0.0",
     "yargs": "^16.2.0"
